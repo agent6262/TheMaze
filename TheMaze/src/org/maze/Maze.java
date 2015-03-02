@@ -34,6 +34,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.maze.event.CollisionEvent;
+import org.maze.mouse.MouseBox;
+import org.maze.mouse.MouseListener;
 
 
 /**
@@ -56,7 +58,7 @@ public class Maze {
     private static Configuration globalConfig;
     
     // Vertex Buffered Object (VBO)
-    private static GameObject mouseBox;//TODO
+    private static MouseBox mouseBox;
     private static ArrayList<GameObject> movingObjectList;
     private static ArrayList<GameObject> staticObjectList;
     
@@ -72,9 +74,12 @@ public class Maze {
     }
     
     private static void configurationPreInitGl() {
+        // Global configuration loading/creating
+        Logger.log("Loading Global Configuration");
         File globalConfigFile = new File(System.getProperty("user.dir")+"\\Global.config");
-        if(!globalConfigFile.exists()) {
+        if(!globalConfigFile.exists() || globalConfigFile.length() == 0) {
             try {
+                Logger.log("    Creating Global Configuration");
                 Files.copy(Maze.class.getResourceAsStream("/Global.config"), globalConfigFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 globalConfig = Configuration.loadConfiguration(globalConfigFile);
             } catch (IOException e) {
@@ -83,14 +88,18 @@ public class Maze {
         } else {
             globalConfig = Configuration.loadConfiguration(globalConfigFile);
         }
-        // Create plugin dir
+        
+        // Plugin directory creating
+        Logger.log("Loading Plugin Directory");
         pluginDir = new File(System.getProperty("user.dir")+"\\plugins");
         if(!pluginDir.exists()) {
+            Logger.log("    Creating Plugin Directory");
             pluginDir.mkdir();
         }
     }
     
     private static void gameDataPreInitGL() {
+        Logger.log("Grabbing Values from [Global.config]");
         xSize = globalConfig.getInt("xSize", 1200);
         ySize = globalConfig.getInt("ySize", 800);
         title = globalConfig.getString("Title", "Abstract Java Game Library");
@@ -101,6 +110,7 @@ public class Maze {
     }
     
     private static void initGL() {
+        Logger.log("Initializing OpenGL Context");
         try {
             // Initialize display information
             Display.setDisplayMode(new DisplayMode(xSize, ySize));
@@ -137,8 +147,7 @@ public class Maze {
         staticObjectList = new ArrayList<>();
         movingObjectList = new ArrayList<>();
         // Creates a GameObject box for the mouse
-        mouseBox = new GameObject(
-                new float[] {0, -20, 0, 0, 10, 0, 10, -20}, GL11.GL_QUADS);
+        mouseBox = new MouseBox();
     }
     
     private static void quadTreeInit() {
@@ -148,10 +157,14 @@ public class Maze {
     
     private static void eventDispatcherInit() {
         eventDispatcher = new EventDispatcher();
+        
+        // Load mouseListener
+        eventDispatcher.registerEvents(MouseListener.class);
     }
     
     private static void loadPlugins() {
         try {
+            Logger.log("Loading Plugins");
             PluginLoader.loadPlugins();
         } catch (IOException e) {
             Logger.severe("PluginLoader Error: "+e.getMessage());
@@ -215,9 +228,7 @@ public class Maze {
     }
     
     private static void vertexBufferedObjectUpdate() {
-        if(debug) {
-            mouseBox.updatePosition();
-        }
+        mouseBox.updatePosition();
         // Update list of objects
         if(movingObjectList.size() != 0)
             for(GameObject o : movingObjectList)
@@ -228,10 +239,7 @@ public class Maze {
         if(movingObjectList.size() != 0)
             for(GameObject o : movingObjectList)
                 quadTree.updateObject(o);
-        
-        if(debug) {
             quadTree.updateObject(mouseBox);
-        }
     }
     
     private static void handleCollision() {
@@ -246,9 +254,7 @@ public class Maze {
     }
 
     private static void finalization() {
-        if(debug) {
-            mouseBox.finalizeUpdate();
-        }
+        mouseBox.finalizeUpdate();
         
         if(movingObjectList.size() != 0)
             for(GameObject o : movingObjectList)
@@ -290,6 +296,11 @@ public class Maze {
     }
     
     public static void main(String[] args) {
+        
+        System.out.println();
+        System.out.println("================================================================================");
+        System.out.println("========================     Starting The Maze Game     ========================");
+        System.out.println("================================================================================");
         
         Maze.preInitGl();
         Maze.initGL();
@@ -380,6 +391,10 @@ public class Maze {
     
     public static File getPLuginDir() {
         return pluginDir;
+    }
+    
+    public static GameObject getMouseBox() {
+        return mouseBox;
     }
     
 }
