@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/lwjgl-2.9.1/jar/lwjgl_util.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://legacy.lwjgl.org/javadoc/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="TheMaze/lib/lwjgl-2.9.1/native/windows"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/lwjgl-2.9.1/jar/lwjgl.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://legacy.lwjgl.org/javadoc/"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="TheMaze/lib/lwjgl-2.9.1/native/windows"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/slick-util.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://slick.ninjacave.com/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/ajgl/AJGL.jar" sourcepath="lib/ajgl/src">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/TheMaze/lib/ajgl/doc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

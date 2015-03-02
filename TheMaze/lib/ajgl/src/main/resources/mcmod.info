@@ -1,0 +1,16 @@
+[
+{
+  "modid": "HERO_Z0173",
+  "name": "Hero Mod",
+  "description": "A mod that resembles Bleach",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Tyler Bucher"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
